@@ -1,7 +1,7 @@
 describe('Basic user flow for Website', () => {
   // First, visit the lab 8 website
   beforeAll(async () => {
-    await page.goto('https://cse110-f2021.github.io/Lab8_Website');
+    await page.goto('http://127.0.0.1:5500/index.html');
   });
 
   // Next, check to make sure that all 20 <product-item> elements have loaded
@@ -38,7 +38,17 @@ describe('Basic user flow for Website', () => {
     // TODO - Step 1
     // Right now this function is only checking the first <product-item> it found, make it so that
     // it checks every <product-item> it found
+    for (var i = 1; i< prodItems.length; i++){
+      console.log(`Checking product item ${i+1}/${prodItems.length}`);
+      data = await prodItems[i].getProperty('data');
+      plainValue = await data.jsonValue();
 
+    if (plainValue.title.length == 0) { allArePopulated = false; }
+    if (plainValue.price.length == 0) { allArePopulated = false; }
+    if (plainValue.image.length == 0) { allArePopulated = false; }
+
+    expect(allArePopulated).toBe(true);
+    }
   }, 10000);
 
   // Check to make sure that when you click "Add to Cart" on the first <product-item> that
@@ -47,9 +57,14 @@ describe('Basic user flow for Website', () => {
     console.log('Checking the "Add to Cart" button...');
     // TODO - Step 2
     // Query a <product-item> element using puppeteer ( checkout page.$() and page.$$() in the docs )
+      const prodItems = await page.$('product-item');
     // Grab the shadowRoot of that element (it's a property), then query a button from that shadowRoot.
+      const shadow = prodItems.shadowRoot;
+      const button = shadow.querySelector("button");
     // Once you have the button, you can click it and check the innerText property of the button.
+      page.click(button);
     // Once you have the innerText property, use innerText.jsonValue() to get the text value of it
+    expect(button.innerText.jsonValue()).toBe('Remove from Cart');
   }, 2500);
 
   // Check to make sure that after clicking "Add to Cart" on every <product-item> that the Cart
@@ -58,8 +73,14 @@ describe('Basic user flow for Website', () => {
     console.log('Checking number of items in cart on screen...');
     // TODO - Step 3
     // Query select all of the <product-item> elements, then for every single product element
+    const prodItems = await page.$$('product-item');
+    for (var i = 0; i< prodItems.length; i++){
     // get the shadowRoot and query select the button inside, and click on it.
+      const shadow = prodItems[i].shadowRoot;
+      const button = shadow.querySelector("button");
+      page.click(button);
     // Check to see if the innerText of #cart-count is 20
+      expect(page.$('#cart-count').innerText.jsonValue()).toBe(20);}
   }, 10000);
 
   // Check to make sure that after you reload the page it remembers all of the items in your cart
@@ -69,6 +90,8 @@ describe('Basic user flow for Website', () => {
     // Reload the page, then select all of the <product-item> elements, and check every
     // element to make sure that all of their buttons say "Remove from Cart".
     // Also check to make sure that #cart-count is still 20
+    page.reload();
+    
   }, 10000);
 
   // Check to make sure that the cart in localStorage is what you expect
