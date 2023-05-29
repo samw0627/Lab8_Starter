@@ -41,3 +41,50 @@ test('isEmail test4: False', ()=> {
     expect(functions.isEmail("")).toBe(false);
 })
 
+/**
+ * Unit Tests for isDate()
+ */
+test('isDate test1: True', ()=> {
+    expect(functions.isDate("12/25/2023")).toBe(true);
+})
+test('isDate test2: True', ()=> {
+    expect(functions.isDate("1/1/2023")).toBe(true);
+})
+test('isDate test3: False', ()=> {
+    expect(functions.isDate("1/1/23")).toBe(false);
+})
+test('isDate test4: False', ()=> {
+    expect(functions.isDate("")).toBe(false);
+})
+
+/**
+ * Unit Tests for isHexColor()
+ */
+test('isHexColor test1: True', ()=> {
+    expect(functions.isHexColor("#FFFFFF")).toBe(true);
+})
+test('isHexColor test2: True', ()=> {
+    expect(functions.isHexColor("#5F8")).toBe(true);
+})
+test('isHexColor test3: False', ()=> {
+    expect(functions.isHexColor("5F88")).toBe(false);
+})
+test('isHexColor test4: False', ()=> {
+    expect(functions.isHexColor("")).toBe(false);
+})
+/**
+ * Unit Tests for isStrongPassword()
+ */
+test('isStrongPassword test1: True', ()=> {
+    expect(functions.isStrongPassword("hinhin")).toBe(true);
+})
+test('isStrongPassword test2: True', ()=> {
+    expect(functions.isStrongPassword("A9eF4Q")).toBe(true);
+})
+test('isStrongPassword test3: False', ()=> {
+    expect(functions.isStrongPassword("")).toBe(false);
+})
+test('isStrongPassword test4: False', ()=> {
+    expect(functions.isStrongPassword("hinhin032qt8Hw0o")).toBe(false);
+})
+
